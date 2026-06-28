@@ -6,6 +6,7 @@ This script starts the FastAPI server with proper configuration.
 
 import uvicorn
 import os
+import sys
 from pathlib import Path
 
 def main():
@@ -13,6 +14,10 @@ def main():
     # Ensure required directories exist
     os.makedirs("uploads", exist_ok=True)
     os.makedirs("data", exist_ok=True)
+    
+    # Add src directory to Python path
+    src_path = Path(__file__).parent / "src"
+    sys.path.insert(0, str(src_path))
     
     # Get configuration from environment or use defaults
     host = os.getenv("BACKEND_HOST", "0.0.0.0")
