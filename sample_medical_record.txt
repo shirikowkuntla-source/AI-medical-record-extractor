@@ -1,0 +1,21 @@
+Patient Name: Jane Smith
+Age: 45
+Gender: Female
+
+Symptoms: Fever, Cough, Headache, Body ache, Fatigue
+
+Diagnosis: Viral Infection with upper respiratory tract involvement
+
+Medications:
+- Paracetamol 500mg - Twice daily after meals
+- Cough Syrup 100ml - Thrice daily
+- Vitamin C 1000mg - Once daily in morning
+- Azithromycin 250mg - Once daily for 5 days
+
+Medical History: No significant medical history. No known allergies.
+
+Doctor: Dr. John Doe
+Hospital: City General Hospital
+
+Notes: Patient presented with fever (101°F), persistent cough, and headache for 3 days. 
+Recommended rest and hydration. Follow-up in 5 days if symptoms persist.
