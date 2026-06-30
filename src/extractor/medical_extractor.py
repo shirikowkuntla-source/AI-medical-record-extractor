@@ -66,22 +66,27 @@ class MedicalExtractor:
         Returns:
             Patient name or None
         """
-        # Common patterns for patient name
+        # Common patterns for patient name - order matters!
+        # More specific patterns first to avoid false matches
+        # Use lookahead to stop at next field label or end
         patterns = [
-            r'Patient\s*Name[:\s]+([A-Z][a-z]+(?:\s+[A-Z][a-z]+)+)',
-            r'Name[:\s]+([A-Z][a-z]+(?:\s+[A-Z][a-z]+)+)',
-            r'Patient[:\s]+([A-Z][a-z]+(?:\s+[A-Z][a-z]+)+)',
-            r'Mr\.?\s+([A-Z][a-z]+(?:\s+[A-Z][a-z]+)+)',
-            r'Mrs\.?\s+([A-Z][a-z]+(?:\s+[A-Z][a-z]+)+)',
-            r'Ms\.?\s+([A-Z][a-z]+(?:\s+[A-Z][a-z]+)+)',
+            r'Patient\s+Name\s*:\s*([A-Z][a-z]+(?:\s+[A-Z][a-z]+){1,2})(?=\s+[A-Z][a-z]|\s*$)',
+            r'Patient\s*Name\s*:\s*([A-Z][a-z]+(?:\s+[A-Z][a-z]+){1,2})(?=\s+[A-Z][a-z]|\s*$)',
+            r'Patient\s*:\s*([A-Z][a-z]+(?:\s+[A-Z][a-z]+){1,2})(?=\s+[A-Z][a-z]|\s*$)',
+            r'Mr\.?\s+([A-Z][a-z]+(?:\s+[A-Z][a-z]+){1,2})(?=\s+[A-Z][a-z]|\s*$)',
+            r'Mrs\.?\s+([A-Z][a-z]+(?:\s+[A-Z][a-z]+){1,2})(?=\s+[A-Z][a-z]|\s*$)',
+            r'Ms\.?\s+([A-Z][a-z]+(?:\s+[A-Z][a-z]+){1,2})(?=\s+[A-Z][a-z]|\s*$)',
         ]
         
         for pattern in patterns:
             match = re.search(pattern, text, re.IGNORECASE)
             if match:
                 name = match.group(1).strip()
-                # Validate it's not a common word
-                if len(name.split()) >= 2 and name.split()[0].lower() not in ['the', 'this', 'that']:
+                # Validate it's not a common word and looks like a real name
+                # Must have at least 2 words, first word should be a name (not DETAILS, INFO, etc.)
+                if (len(name.split()) >= 2 and 
+                    name.split()[0].lower() not in ['the', 'this', 'that', 'name', 'age', 'details', 'info', 'information'] and
+                    len(name.split()[0]) > 2):  # First name should be at least 3 characters
                     return name
         
         return None
@@ -287,10 +292,10 @@ class MedicalExtractor:
             Doctor name or None
         """
         patterns = [
-            r'Dr\.?\s+([A-Z][a-z]+(?:\s+[A-Z][a-z]+)+)',
-            r'Doctor[:\s]+([A-Z][a-z]+(?:\s+[A-Z][a-z]+)+)',
-            r'Physician[:\s]+([A-Z][a-z]+(?:\s+[A-Z][a-z]+)+)',
-            r'Consultant[:\s]+([A-Z][a-z]+(?:\s+[A-Z][a-z]+)+)',
+            r'Dr\.?\s+([A-Z][a-z]+(?:\s+[A-Z][a-z]+){1,2})(?=\s+[A-Z][a-z]|\s*$)',
+            r'Doctor[:\s]+([A-Z][a-z]+(?:\s+[A-Z][a-z]+){1,2})(?=\s+[A-Z][a-z]|\s*$)',
+            r'Physician[:\s]+([A-Z][a-z]+(?:\s+[A-Z][a-z]+){1,2})(?=\s+[A-Z][a-z]|\s*$)',
+            r'Consultant[:\s]+([A-Z][a-z]+(?:\s+[A-Z][a-z]+){1,2})(?=\s+[A-Z][a-z]|\s*$)',
         ]
         
         for pattern in patterns:

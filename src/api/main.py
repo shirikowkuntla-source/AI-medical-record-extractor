@@ -6,14 +6,14 @@ from fastapi import FastAPI, File, UploadFile, HTTPException, Form
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
-from models.schemas import (
+from src.models.schemas import (
     ExtractionResponse,
     UploadResponse,
     ErrorResponse
 )
-from extractor.medical_extractor import MedicalExtractor
-from utils.file_processor import FileProcessor
-from database.db import Database
+from src.extractor.medical_extractor import MedicalExtractor
+from src.utils.file_processor import FileProcessor
+from src.database.db import Database
 
 # Configure logging
 logging.basicConfig(

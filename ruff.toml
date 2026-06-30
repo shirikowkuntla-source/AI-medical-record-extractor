@@ -1,0 +1,54 @@
+# Ruff configuration for AI Medical Record Extractor
+
+# Exclude directories and files
+exclude = [
+    ".git",
+    "__pycache__",
+    "venv",
+    ".venv",
+    "node_modules",
+    "dist",
+    "build",
+    "*.md",  # Exclude markdown files from Python linting
+    "*.txt",
+    "*.json",
+    "*.yaml",
+    "*.yml",
+    "Dockerfile",
+    "docker-compose.yml",
+]
+
+# Line length
+line-length = 100
+
+# Target Python version
+target-version = "py38"
+
+# Linting rules
+[lint]
+select = [
+    "E",   # pycodestyle errors
+    "F",   # pyflakes
+    "I",   # isort
+    "N",   # pep8-naming
+    "W",   # pycodestyle warnings
+]
+
+# Ignore specific rules
+ignore = [
+    "E501",  # Line too long (handled by formatter)
+    "N802",  # Function name should be lowercase (we use snake_case which is fine)
+    "N803",  # Argument name should be lowercase
+    "N804",  # First argument of a class method should be cls
+    "N805",  # First argument of a method should be self
+    "N806",  # Variable in function should be lowercase
+]
+
+# Import sorting
+[lint.isort]
+known-first-party = ["src"]
+known-third-party = ["fastapi", "pydantic", "sqlalchemy"]
+
+# Per-file ignores
+[lint.per-file-ignores]
+"tests/*" = ["S101"]  # Allow assert in tests
